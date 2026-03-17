@@ -7,7 +7,7 @@ La jugadora juega contra la computadora, y el juego lleva el conteo de puntos ha
 
 ## Demo
 
-Se puede ver en GitHub Pages:
+Se puede ver en GitHub Pages: https://github.com/letivsan/modulo-2-ejerciciointermedio.git
 
 ---
 
