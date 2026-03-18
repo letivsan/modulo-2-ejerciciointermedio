@@ -1,0 +1,32 @@
+body {
+  background-color: #0f172a;
+  color: #e2e8f0;
+  font-family: monospace;
+  text-align: center;
+}
+
+.header__title {
+  color: #22c55e;
+}
+
+.game__btn {
+  background-color: #22c55e;
+  border: none;
+  padding: 10px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.game__btn--restart {
+  background-color: #ef4444;
+}
+
+.hidden {
+  display: none;
+}
+
+.footer {
+  margin-top: 40px;
+  border-top: 1px solid #334155;
+  padding: 20px;
+}

@@ -1,16 +1,15 @@
-'use strict'
+'use strict';
 
-/*SECCIÓN DE QUERY-SELECTOR*/
+/* QUERY SELECTORS */
 const selectMove = document.querySelector('.js-selectMove');
 const btnPlay = document.querySelector('.js-btnPlay');
-const form = document.querySelector('.js-form');
+const btnRestart = document.querySelector('.js-btnRestart');
 const resultParagraph = document.querySelector('.js-resultParagraph');
 const userScoreElement = document.querySelector('.js-userScore');
 const computerScoreElement = document.querySelector('.js-computerScore');
 const roundCounterElement = document.querySelector('.js-roundCounter');
 
-
-/*SECCIÓN DE DATOS*/
+/* DATOS */
 let userScore = 0;
 let computerScore = 0;
 let rounds = 0;
@@ -21,8 +20,7 @@ const rules = {
   tijera: 'papel'
 };
 
-
-// SECCIÓN DE FUNCIONES
+/* FUNCIONES */
 
 function getRandomNumber(max) {
   return Math.ceil(Math.random() * max);
@@ -46,9 +44,26 @@ function renderScores() {
   roundCounterElement.textContent = rounds;
 }
 
+function getWinnerMessage() {
+  if (userScore > computerScore) {
+    return '🎉 ¡Has ganado la partida!';
+  } else if (computerScore > userScore) {
+    return '💻 Ha ganado la computadora';
+  } else {
+    return '🤝 Empate final';
+  }
+}
+
+function endGame() {
+  resultParagraph.textContent = getWinnerMessage();
+
+  btnPlay.classList.add('hidden');
+  btnRestart.classList.remove('hidden');
+}
+
 function playGame() {
   if (rounds >= 10) {
-    resultParagraph.textContent = 'Fin del juego';
+    endGame();
     return;
   }
 
@@ -60,7 +75,7 @@ function playGame() {
   if (userMove === computerMove) {
     message = 'Empate';
   } else if (rules[userMove] === computerMove) {
-    message = '¡Has Ganado!';
+    message = '¡Has ganado!';
     userScore++;
   } else {
     message = '¡Has perdido!';
@@ -69,25 +84,41 @@ function playGame() {
 
   rounds++;
 
-  resultParagraph.textContent = `Jugadora: ${userMove}. Computadora: ${computerMove}. ${message}`;
+  resultParagraph.textContent = `Jugadora: ${userMove} | Computadora: ${computerMove} → ${message}`;
+
+  renderScores();
+
+  if (rounds === 10) {
+    endGame();
+  }
+}
+
+function resetGame() {
+  userScore = 0;
+  computerScore = 0;
+  rounds = 0;
+
+  resultParagraph.textContent = '¡Nueva partida!';
+
+  btnRestart.classList.add('hidden');
+  btnPlay.classList.remove('hidden');
 
   renderScores();
 }
 
-
-// SECCIÓN DE FUNCIONES DE EVENTOS
+/* EVENTOS */
 
 function handleClickPlay(ev) {
   ev.preventDefault();
   playGame();
 }
 
+function handleClickRestart() {
+  resetGame();
+}
 
-/*SECCIÓN DE EVENTOS*/
 btnPlay.addEventListener('click', handleClickPlay);
+btnRestart.addEventListener('click', handleClickRestart);
 
-
-/*SECCIÓN DE ACCIONES AL CARGAR LA PÁGINA*/
+/* INIT */
 renderScores();
-
-/*console.log('Página y JS cargados!');*/
