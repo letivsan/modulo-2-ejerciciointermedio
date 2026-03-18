@@ -1,6 +1,6 @@
 'use strict';
 
-/* QUERY SELECTORS */
+/* SECCIÓN DE QUERY SELECTORS */
 const selectMove = document.querySelector('.js-selectMove');
 const btnPlay = document.querySelector('.js-btnPlay');
 const btnRestart = document.querySelector('.js-btnRestart');
@@ -8,8 +8,9 @@ const resultParagraph = document.querySelector('.js-resultParagraph');
 const userScoreElement = document.querySelector('.js-userScore');
 const computerScoreElement = document.querySelector('.js-computerScore');
 const roundCounterElement = document.querySelector('.js-roundCounter');
+const yearElement = document.querySelector ('.js-year');
 
-/* DATOS */
+/* SECCIÓN DE DATOS */
 let userScore = 0;
 let computerScore = 0;
 let rounds = 0;
@@ -20,8 +21,9 @@ const rules = {
   tijera: 'papel'
 };
 
-/* FUNCIONES */
+const currentYear = new Date().getFullYear();
 
+/* SECCIÓN DE FUNCIONES */
 function getRandomNumber(max) {
   return Math.ceil(Math.random() * max);
 }
@@ -106,8 +108,7 @@ function resetGame() {
   renderScores();
 }
 
-/* EVENTOS */
-
+/* SECCIÓN DE FUNCIONES DE EVENTOS */
 function handleClickPlay(ev) {
   ev.preventDefault();
   playGame();
@@ -120,5 +121,6 @@ function handleClickRestart() {
 btnPlay.addEventListener('click', handleClickPlay);
 btnRestart.addEventListener('click', handleClickRestart);
 
-/* INIT */
+/* SECCIÓN DE ACCIONES AL CARGAR LA PÁGINA */
 renderScores();
+yearElement.textContent = currentYear;
