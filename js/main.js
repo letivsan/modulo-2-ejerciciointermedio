@@ -9,6 +9,7 @@ const userScoreElement = document.querySelector('.js-userScore');
 const computerScoreElement = document.querySelector('.js-computerScore');
 const roundCounterElement = document.querySelector('.js-roundCounter');
 const yearElement = document.querySelector ('.js-year');
+const resultSection = document.querySelector ('.js-result');
 
 /* SECCIÓN DE DATOS */
 let userScore = 0;
@@ -48,7 +49,7 @@ function renderScores() {
 
 function getWinnerMessage() {
   if (userScore > computerScore) {
-    return '🎉 ¡Has ganado la partida!';
+    return ' 🏆¡Has ganado la partida!';
   } else if (computerScore > userScore) {
     return '💻 Ha ganado la computadora';
   } else {
@@ -64,6 +65,10 @@ function endGame() {
 }
 
 function playGame() {
+  if (rounds === 0) {
+    resultSection.classList.remove ('hidden');
+  }
+
   if (rounds >= 10) {
     endGame();
     return;
@@ -104,6 +109,8 @@ function resetGame() {
 
   btnRestart.classList.add('hidden');
   btnPlay.classList.remove('hidden');
+
+  resultSection.classList.add ('hidden');
 
   renderScores();
 }
