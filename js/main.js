@@ -12,12 +12,12 @@ const yearElement = document.querySelector ('.js-year');
 const resultSection = document.querySelector ('.js-result');
 
 /* SECCIÓN DE DATOS */
-// variables que cambian durante ejecución
+// variables que cambian durante ejecución del juego
 let userScore = 0;
 let computerScore = 0;
 let rounds = 0;
 
-// reglas 
+// reglas dle juego en objetos 
 const rules = {
   piedra: 'tijera',
   papel: 'piedra',
@@ -28,12 +28,12 @@ const rules = {
 const currentYear = new Date().getFullYear();
 
 /* SECCIÓN DE FUNCIONES */
-// número aleatorio
+// número aleatorio entre 1 y max
 function getRandomNumber(max) {
   return Math.ceil(Math.random() * max);
 }
 
-// jugada ordenador
+// decide la jugada del ordenador
 function getComputerMove() {
   const randomNumber = getRandomNumber(9);
 
@@ -46,27 +46,15 @@ function getComputerMove() {
   }
 }
 
-// actualizar html y pintar las puntuaciones
-function renderScores() {
-  userScoreElement.textContent = userScore;
-  computerScoreElement.textContent = computerScore;
-  roundCounterElement.textContent = rounds;
-}
-
-//pintar la jugada
-function renderPlay (userMove, computerMove, message) {
-  resultParagraph.textContent = `Jugadora: ${userMove} | Computadora: ${computerMove} → ${message}`;
-}
-
-// lógica del resultado
+// lógica del resultado de cada ronda
 function renderMessage (userMove, computerMove, winMessage, loseMessage, drawMessage) {
   if (userMove === computerMove) {
-    return drawMessage;
+    return drawMessage; //empate
   } else if (rules [userMove] === computerMove) {
-    userScore++;
+    userScore++; //punto para la jugadora
     return winMessage;
   } else {
-    computerScore++;
+    computerScore++; //punto para el ordenador
     return loseMessage;
   }
 }
@@ -82,50 +70,59 @@ function getWinnerMessage() {
   }
 }
 
-//mostrar la sección de resultados
-function showResultSection () {
-  resultSection.classList.remove ('hidden');
+// funciones de render
+// pintar las puntuaciones y ronda
+function renderScores() {
+  userScoreElement.textContent = userScore;
+  computerScoreElement.textContent = computerScore;
+  roundCounterElement.textContent = rounds;
+}
+
+//pintar el resultado de una jugada
+function renderPlay (userMove, computerMove, message) {
+  resultParagraph.textContent = `Jugadora: ${userMove} | Computadora: ${computerMove} → ${message}`;
+}
+
+// pintar mensajes simples (el inicio, final)
+function renderResultMessage (message) {
+  resultParagraph.textContent = message;
+}
+
+// mostrar u ocultar la sección de resultados
+function rederResultSection (isVisible) {
+  if (isVisible) {
+    resultSection.classList.remove ('hidden');
+  } else {
+    btnPlay.classList.add ('hidden');
+    btnRestart.classList.remove ('hidden');
+  }
 }
 
 // fin del juego
 function endGame() {
-  resultParagraph.textContent = getWinnerMessage();
-
-  // ocultar jugar y muestra reiniciar
-  btnPlay.classList.add('hidden');
-  btnRestart.classList.remove('hidden');
+  const finalMessage = getWinnerMessage(); //obtenemos el mensaje final
+  renderResultMessage(finalMessage); //lo pinta
+  renderButtons(false); // aparece el botón de reiniciar
 }
 
-// mostrar resultados con sección oculta inicio
+// Ejecuta la ronda
 function playGame() {
+  // en la primera ronda muestra la sección
   if (rounds === 0) {
-    // resultSection.classList.remove ('hidden');
-    showResultSection ();
+    renderResultSection(true);
   }
 
-  // comprobar limite y salir con return. Si ya terminó llama a endgame
+// comprobar limite de 10 y salir con return. Si ya terminó llama a endgame
   if (rounds >= 10) {
     endGame();
     return;
   }
 
-  // obtener jugadas
+// obtener jugadas
   const userMove = selectMove.value;
   const computerMove = getComputerMove();
 
- 
-  // let message = '';
-  // // lógica del juego
-  // if (userMove === computerMove) {
-  //   message = 'Empate';
-  // } else if (rules[userMove] === computerMove) {
-  //   message = '¡Has ganado!';
-  //   userScore++;
-  // } else {
-  //   message = '¡Has perdido!';
-  //   computerScore++;
-  // }
-
+// obtener el resultado
  const message = renderMessage(
   userMove,
   computerMove,
@@ -134,48 +131,41 @@ function playGame() {
   'Empate'
  );
  
-  rounds++;
+  rounds++; //aumenta la ronda
 
-  renderPlay (userMove, computerMove, message);
+  renderPlay (userMove, computerMove, message); //pintamos la jugada
+  renderScores(); //ACTUALIZAMOS el marcador
 
-  // muestra resultado en texto
-  // resultParagraph.textContent = `Jugadora: ${userMove} | Computadora: ${computerMove} → ${message}`;
-
-  renderScores();
-
+  // si llegamos a la ronda 10, se termina
   if (rounds === 10) {
     endGame();
   }
 }
 
-// reinicio estado
+// reinicio estado de la partida
 function resetGame() {
   userScore = 0;
   computerScore = 0;
   rounds = 0;
 
-  resultParagraph.textContent = '¡Nueva partida!';
-
-  btnRestart.classList.add('hidden');
-  btnPlay.classList.remove('hidden');
-
-  resultSection.classList.add ('hidden');
-
+  renderResultMessage ('¡Nueva partida!');
+  renderButtons(true);
+  renderResultSection(false);
   renderScores();
 }
 
 /* SECCIÓN DE FUNCIONES DE EVENTOS */
 function handleClickPlay(ev) {
-  ev.preventDefault();
+  ev.preventDefault(); //evita la recarga
   playGame();
 }
 
-// reinicio
+// reinicio con click
 function handleClickRestart() {
   resetGame();
 }
 
-// conexión botón con función
+// escuchadores de eventos
 btnPlay.addEventListener('click', handleClickPlay);
 btnRestart.addEventListener('click', handleClickRestart);
 
