@@ -17,7 +17,7 @@ let userScore = 0;
 let computerScore = 0;
 let rounds = 0;
 
-// reglas dle juego en objetos 
+// reglas del juego en objetos 
 const rules = {
   piedra: 'tijera',
   papel: 'piedra',
@@ -89,9 +89,19 @@ function renderResultMessage (message) {
 }
 
 // mostrar u ocultar la sección de resultados
-function rederResultSection (isVisible) {
+function renderResultSection (isVisible) {
   if (isVisible) {
     resultSection.classList.remove ('hidden');
+  } else {
+    resultSection.classList.add ('hidden');
+  }
+}
+
+// control de los botones
+function renderButtons (isPlaying) {
+  if (isPlaying) {
+    btnPlay.classList.remove ('hidden');
+    btnRestart.classList.add ('hidden');
   } else {
     btnPlay.classList.add ('hidden');
     btnRestart.classList.remove ('hidden');
